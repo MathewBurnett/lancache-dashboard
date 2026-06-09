@@ -1,0 +1,30 @@
+services:
+  lancache-dashboard:
+    build: .
+    container_name: lancache-dashboard
+    restart: unless-stopped
+    ports:
+      # Exposed on all interfaces (LAN). To restrict to the host only, use:
+      #   - "127.0.0.1:3000:3000"
+      - "3000:3000"
+    environment:
+      - LOG_PATH=/logs/access.log
+      - DB_PATH=/app/data/lancache.db
+      # Hide prefill/localhost traffic from stats by default (toggle live in the UI).
+      # The docker bridge gateway (172.x) is where prefill usually originates.
+      - EXCLUDE_IPS=127.0.0.1,::1,172.,localhost
+      # Cache retention window (days) — match your lancache CACHE_MAX_AGE.
+      # Used to estimate which games are "likely still cached".
+      - CACHE_MAX_AGE_DAYS=60
+      # --- Security (recommended when others can reach the dashboard) ---
+      # Set an admin key to lock the Ingest/Update actions (viewing stays open).
+      # Enter it via the "Admin" button in the UI. Leave unset to keep actions open.
+      # - ADMIN_API_KEY=change-me-to-a-long-random-string
+      # Optional full-site password (stricter — gates viewing too):
+      # - DASHBOARD_USER=admin
+      # - DASHBOARD_PASSWORD=change-me
+    volumes:
+      # Mount your lancache log directory (read-only)
+      - /path/to/lancache/logs:/logs:ro
+      # Persists the SQLite DB + the Steam depot mapping file (~100MB, downloaded once)
+      - ./data:/app/data

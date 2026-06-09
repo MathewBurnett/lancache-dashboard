@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +40,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# runtime data (SQLite DB, Steam depot mappings, etc.)
+/data
+*.db
+*.db-shm
+*.db-wal
+pics_depot_mappings.json
+pics_meta.json
+steam-depots.json
+steam-apps.json
