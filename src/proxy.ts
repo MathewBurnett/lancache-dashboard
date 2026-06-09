@@ -19,7 +19,7 @@ function unauthorized(): NextResponse {
   });
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   // Full-site basic auth (opt-in)
   if (USER && PASS) {
     const header = req.headers.get("authorization") || "";
