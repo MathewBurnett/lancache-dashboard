@@ -6,7 +6,7 @@ RUN apk add --no-cache python3 make g++
 FROM base AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install --no-audit --no-fund
 
 FROM base AS builder
 WORKDIR /app

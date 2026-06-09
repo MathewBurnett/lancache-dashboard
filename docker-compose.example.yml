@@ -1,0 +1,22 @@
+services:
+  lancache-dashboard:
+    build: .
+    container_name: lancache-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - LOG_PATH=/logs/access.log
+      - DB_PATH=/app/data/lancache.db
+      # IPs/prefixes hidden from stats by default (prefill from the cache host).
+      - EXCLUDE_IPS=127.0.0.1,::1,172.,localhost
+      # Match your lancache CACHE_MAX_AGE; used to estimate "likely cached".
+      - CACHE_MAX_AGE_DAYS=60
+      # Locks the Ingest/Update actions only (viewing stays open). Optional.
+      - ADMIN_API_KEY=
+      # Full-site login. Set both to require credentials for everyone.
+      - DASHBOARD_USER=
+      - DASHBOARD_PASSWORD=
+    volumes:
+      - /path/to/lancache/logs:/logs:ro
+      - ./data:/app/data

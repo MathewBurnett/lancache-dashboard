@@ -23,7 +23,13 @@ Built to stay light on resources and tiny on disk, even when your access logs gr
 
 ## Quick Start (Docker)
 
-1. Edit `docker-compose.yml` and point the volume at your LanCache log directory:
+1. Create your compose file from the template:
+
+   ```bash
+   cp docker-compose.example.yml docker-compose.yml
+   ```
+
+2. Edit `docker-compose.yml` — point the volume at your LanCache log directory and set any options:
 
    ```yaml
    volumes:
@@ -31,15 +37,21 @@ Built to stay light on resources and tiny on disk, even when your access logs gr
      - ./data:/app/data                        # DB + depot mappings persist here
    ```
 
-2. Start it:
+3. Prepare the data directory (the container runs as UID 1001):
 
    ```bash
-   docker compose up -d
+   mkdir -p data && sudo chown -R 1001:1001 data
    ```
 
-3. Open `http://your-server-ip:3000`
+4. Start it:
 
-On first launch it begins ingesting your `access.log` and downloads the Steam depot mapping in the background (see [Steam game identification](#steam-game-identification)).
+   ```bash
+   docker compose up -d --build
+   ```
+
+5. Open `http://your-server-ip:3000`
+
+Your `docker-compose.yml` is gitignored, so any credentials you put in it stay local. On first launch the dashboard ingests your `access.log` and downloads the Steam depot mapping in the background (see [Steam game identification](#steam-game-identification)).
 
 ---
 
