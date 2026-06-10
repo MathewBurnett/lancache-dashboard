@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { Layers, LayoutGrid, ChartPie } from "lucide-react";
-import { formatBytes, formatNumber, getServiceLabel } from "@/lib/format";
+import { formatBytes, formatNumber, getServiceLabel, getServiceColor } from "@/lib/format";
 import { SectionHeader } from "./SectionHeader";
 
 interface ServiceData {
@@ -16,25 +16,6 @@ interface ServiceData {
   missBytes: number;
 }
 
-const SERVICE_COLORS: Record<string, string> = {
-  steam: "#66c0f4",
-  epicgames: "#9ca3af",
-  riot: "#d13639",
-  battlenet: "#148EFF",
-  wsus: "#0078d4",
-  uplay: "#7c3aed",
-  playstation: "#2563eb",
-  xbox: "#107c10",
-  nintendo: "#e60012",
-  origin: "#f56c2d",
-};
-
-const FALLBACK_COLORS = ["#3b82f6", "#a855f7", "#10b981", "#f59e0b", "#ec4899", "#06b6d4", "#84cc16", "#f97316"];
-
-function colorFor(service: string, index: number) {
-  return SERVICE_COLORS[service.toLowerCase()] || FALLBACK_COLORS[index % FALLBACK_COLORS.length];
-}
-
 export function ServiceChart({ data }: { data: ServiceData[] }) {
   const [view, setView] = useState<"grid" | "chart">("grid");
 
@@ -42,11 +23,11 @@ export function ServiceChart({ data }: { data: ServiceData[] }) {
   const totalRequests = data.reduce((s, d) => s + d.requests, 0);
 
   const services = data
-    .map((d, i) => {
+    .map((d) => {
       const cacheable = d.hitBytes + d.missBytes;
       return {
         ...d,
-        color: colorFor(d.service, i),
+        color: getServiceColor(d.service),
         pct: totalBytes > 0 ? (d.bytesSent / totalBytes) * 100 : 0,
         hitRate: cacheable > 0 ? Math.round((d.hitBytes / cacheable) * 100) : 0,
       };

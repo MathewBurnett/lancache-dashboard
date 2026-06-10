@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Activity, Gauge } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
-import { formatBytes, getServiceLabel } from "@/lib/format";
+import { formatBytes, getServiceLabel, getServiceColor } from "@/lib/format";
 
 interface LiveDownload {
   key: string;
@@ -19,19 +19,6 @@ interface LiveDownload {
   durationSec: number;
   speedBps: number;
 }
-
-const SERVICE_DOT: Record<string, string> = {
-  steam: "bg-[#66c0f4]",
-  epicgames: "bg-gray-300",
-  riot: "bg-[#d13639]",
-  battlenet: "bg-[#148EFF]",
-  wsus: "bg-[#0078d4]",
-  uplay: "bg-gray-400",
-  playstation: "bg-[#003087]",
-  xbox: "bg-[#107c10]",
-  nintendo: "bg-[#e60012]",
-  origin: "bg-[#f56c2d]",
-};
 
 export function LiveDownloads({ includeAll = false }: { includeAll?: boolean }) {
   const [connected, setConnected] = useState(false);
@@ -121,7 +108,7 @@ export function LiveDownloads({ includeAll = false }: { includeAll?: boolean }) 
 }
 
 function DownloadRow({ d, maxBps }: { d: LiveDownload; maxBps: number }) {
-  const dot = SERVICE_DOT[d.service.toLowerCase()] || "bg-gray-500";
+  const dotColor = getServiceColor(d.service);
   const speedPct = (d.speedBps / maxBps) * 100;
   const title = d.gameName || (d.service === "steam" && d.depotId ? `Steam depot ${d.depotId}` : getServiceLabel(d.service));
   const cacheable = d.hitBytes + d.missBytes;
@@ -138,7 +125,7 @@ function DownloadRow({ d, maxBps }: { d: LiveDownload; maxBps: number }) {
             <img src={d.imageUrl} alt="" className="w-full h-full object-cover" loading="lazy" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className={`w-2.5 h-2.5 rounded-full ${dot}`} />
+              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: dotColor }} />
             </div>
           )}
         </div>

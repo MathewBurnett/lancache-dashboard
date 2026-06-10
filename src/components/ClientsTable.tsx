@@ -1,7 +1,7 @@
 "use client";
 
 import { Users } from "lucide-react";
-import { formatBytes, formatNumber, getServiceLabel } from "@/lib/format";
+import { formatBytes, formatNumber, getServiceLabel, getServiceColor } from "@/lib/format";
 import { SectionHeader } from "./SectionHeader";
 
 interface Client {
@@ -14,19 +14,6 @@ interface Client {
   missBytes: number;
   topService: string;
 }
-
-const SERVICE_DOT: Record<string, string> = {
-  steam: "bg-[#66c0f4]",
-  epicgames: "bg-gray-300",
-  riot: "bg-[#d13639]",
-  battlenet: "bg-[#148EFF]",
-  wsus: "bg-[#0078d4]",
-  uplay: "bg-gray-400",
-  playstation: "bg-[#003087]",
-  xbox: "bg-[#107c10]",
-  nintendo: "bg-[#e60012]",
-  origin: "bg-[#f56c2d]",
-};
 
 function rankStyle(i: number) {
   if (i === 0) return "bg-amber-500/20 text-amber-400 border-amber-500/30";
@@ -49,7 +36,7 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
           {clients.map((client, i) => {
             const cacheable = client.hitBytes + client.missBytes;
             const hitRate = cacheable > 0 ? Math.round((client.hitBytes / cacheable) * 100) : 0;
-            const dot = SERVICE_DOT[client.topService.toLowerCase()] || "bg-gray-500";
+            const dotColor = getServiceColor(client.topService);
             const barPct = (client.bytesSent / maxBytes) * 100;
             const hitColor = hitRate >= 50 ? "text-green-400" : hitRate > 0 ? "text-amber-400" : "text-gray-500";
             const hitBar = hitRate >= 50 ? "bg-green-500" : hitRate > 0 ? "bg-amber-500" : "bg-gray-600";
@@ -69,7 +56,7 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
                   <div className="flex-1 min-w-0">
                     <div className="text-sm font-medium text-gray-100 font-mono">{client.clientIp}</div>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className={`w-1.5 h-1.5 rounded-full ${dot}`} />
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: dotColor }} />
                       <span className="text-[11px] text-gray-500">{getServiceLabel(client.topService)}</span>
                       <span className="text-[11px] text-gray-600">· {formatNumber(client.requests)} req</span>
                     </div>

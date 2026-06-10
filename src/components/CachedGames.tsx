@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { Gamepad2, ChevronDown, Search, Database, Zap, FlaskConical, Info } from "lucide-react";
-import { formatBytes, getServiceLabel } from "@/lib/format";
+import { formatBytes, getServiceLabel, getServiceColor } from "@/lib/format";
 
 interface CachedGame {
   service: string;
@@ -22,23 +22,6 @@ interface Summary {
   totalGames: number;
   gamesInCache: number;
   totalCachedBytes: number;
-}
-
-const SERVICE_THEME: Record<string, { abbr: string; from: string; to: string; text: string }> = {
-  steam: { abbr: "Steam", from: "from-[#1b2838]", to: "to-[#2a475e]", text: "text-[#66c0f4]" },
-  epicgames: { abbr: "Epic", from: "from-[#202020]", to: "to-[#2f2f2f]", text: "text-white" },
-  riot: { abbr: "Riot", from: "from-[#7a1f21]", to: "to-[#d13639]", text: "text-white" },
-  battlenet: { abbr: "Battle.net", from: "from-[#0a4a8f]", to: "to-[#148EFF]", text: "text-white" },
-  wsus: { abbr: "Windows", from: "from-[#005a9e]", to: "to-[#0078d4]", text: "text-white" },
-  uplay: { abbr: "Ubisoft", from: "from-[#1a1a1a]", to: "to-[#3a3a3a]", text: "text-white" },
-  playstation: { abbr: "PlayStation", from: "from-[#00216e]", to: "to-[#003087]", text: "text-white" },
-  xbox: { abbr: "Xbox", from: "from-[#0b5e0b]", to: "to-[#107c10]", text: "text-white" },
-  nintendo: { abbr: "Nintendo", from: "from-[#b3000e]", to: "to-[#e60012]", text: "text-white" },
-  origin: { abbr: "EA", from: "from-[#c0541f]", to: "to-[#f56c2d]", text: "text-white" },
-};
-
-function theme(service: string) {
-  return SERVICE_THEME[service.toLowerCase()] || { abbr: getServiceLabel(service), from: "from-gray-700", to: "to-gray-800", text: "text-gray-200" };
 }
 
 export function CachedGames() {
@@ -224,7 +207,7 @@ function SegmentBtn({ active, onClick, label, count }: { active: boolean; onClic
 function GameCard({ game }: { game: CachedGame }) {
   const [imgErr, setImgErr] = useState(false);
   const [imgSrc, setImgSrc] = useState(game.imageUrl);
-  const t = theme(game.service);
+  const serviceColor = getServiceColor(game.service);
   const resolved = !!game.gameName && !game.gameName.startsWith("Depot ");
   const name = resolved ? game.gameName : `Unknown content`;
   const total = game.hitCount + game.missCount;
@@ -274,8 +257,11 @@ function GameCard({ game }: { game: CachedGame }) {
             onError={handleImgError}
           />
         ) : (
-          <div className={`absolute inset-0 bg-gradient-to-br ${t.from} ${t.to} flex items-center justify-center`}>
-            <span className={`text-lg font-bold ${t.text} opacity-80`}>{t.abbr}</span>
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ background: `linear-gradient(135deg, ${serviceColor}40, #0a0f1a)` }}
+          >
+            <span className="text-lg font-bold text-white/90">{getServiceLabel(game.service)}</span>
           </div>
         )}
 

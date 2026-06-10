@@ -13,35 +13,5 @@ export function formatNumber(num: number): string {
   return num.toLocaleString();
 }
 
-export function getServiceColor(service: string): string {
-  const colors: Record<string, string> = {
-    steam: "#1b2838",
-    epicgames: "#2a2a2a",
-    battlenet: "#00AEFF",
-    origin: "#f56c2d",
-    riot: "#d13639",
-    wsus: "#0078d4",
-    uplay: "#0070ff",
-    playstation: "#003087",
-    xbox: "#107c10",
-    nintendo: "#e60012",
-    default: "#6b7280",
-  };
-  return colors[service.toLowerCase()] || colors.default;
-}
-
-export function getServiceLabel(service: string): string {
-  const labels: Record<string, string> = {
-    steam: "Steam",
-    epicgames: "Epic Games",
-    battlenet: "Battle.net",
-    origin: "EA/Origin",
-    riot: "Riot Games",
-    wsus: "Windows Update",
-    uplay: "Ubisoft",
-    playstation: "PlayStation",
-    xbox: "Xbox",
-    nintendo: "Nintendo",
-  };
-  return labels[service.toLowerCase()] || service;
-}
+// Service metadata lives in services.ts (full cache-domains coverage + fallback).
+export { getServiceLabel, getServiceColor, getServiceAbbr, getServiceMeta } from "./services";

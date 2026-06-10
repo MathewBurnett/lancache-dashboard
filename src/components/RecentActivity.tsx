@@ -1,7 +1,7 @@
 "use client";
 
 import { History } from "lucide-react";
-import { formatBytes, getServiceLabel } from "@/lib/format";
+import { formatBytes, getServiceLabel, getServiceColor } from "@/lib/format";
 import { SectionHeader } from "./SectionHeader";
 
 interface RecentEntry {
@@ -14,19 +14,6 @@ interface RecentEntry {
   cacheStatus: string;
   upstreamHost: string;
 }
-
-const SERVICE_DOT: Record<string, string> = {
-  steam: "bg-[#66c0f4]",
-  epicgames: "bg-gray-300",
-  riot: "bg-[#d13639]",
-  battlenet: "bg-[#148EFF]",
-  wsus: "bg-[#0078d4]",
-  uplay: "bg-gray-400",
-  playstation: "bg-[#003087]",
-  xbox: "bg-[#107c10]",
-  nintendo: "bg-[#e60012]",
-  origin: "bg-[#f56c2d]",
-};
 
 export function RecentActivity({ entries }: { entries: RecentEntry[] }) {
   return (
@@ -44,12 +31,12 @@ export function RecentActivity({ entries }: { entries: RecentEntry[] }) {
       ) : (
         <div className="space-y-1 max-h-96 overflow-y-auto pr-1">
           {entries.map((entry) => {
-            const dot = SERVICE_DOT[entry.service.toLowerCase()] || "bg-gray-500";
+            const dotColor = getServiceColor(entry.service);
             const isHit = entry.cacheStatus === "HIT";
             const isMiss = entry.cacheStatus === "MISS";
             return (
               <div key={entry.id} className="flex items-center gap-3 py-2 px-2.5 rounded-lg hover:bg-gray-800/50 transition-colors group">
-                <span className={`w-2 h-2 rounded-full ${dot} shrink-0`} />
+                <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: dotColor }} />
                 <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded shrink-0 w-12 text-center ${
                   isHit ? "bg-green-500/15 text-green-400" : isMiss ? "bg-red-500/15 text-red-400" : "bg-gray-800 text-gray-500"
                 }`}>
