@@ -58,14 +58,20 @@ export async function GET() {
 
     // Resolve Battle.net product codes to game names + images (instant, local lookup)
     for (const game of games) {
-      if (game.service === "blizzard" && !game.gameName) {
+      if (game.service === "blizzard" && (!game.gameName || (!game.imageUrl && game.imageUrl !== "none"))) {
         const name = resolveBattleNetGame(game.gameId);
+        const img = getBattleNetImageUrl(game.gameId);
         if (name) {
           game.gameName = name;
-          game.imageUrl = getBattleNetImageUrl(game.gameId) || "";
-          updateGameName("blizzard", game.gameId, name, game.imageUrl || undefined);
+          // Store "none" as a sentinel so we don't re-check every request
+          // for games that genuinely have no Steam counterpart
+          const imageToStore = img || "none";
+          game.imageUrl = img || "";
+          updateGameName("blizzard", game.gameId, name, imageToStore);
         }
       }
+      // Clear the sentinel for display (UI sees empty string, shows placeholder)
+      if (game.imageUrl === "none") game.imageUrl = "";
     }
 
     // Deduplicate: multiple depots for the same game should be merged
