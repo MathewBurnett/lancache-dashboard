@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Activity, Gauge } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
-import { formatBytes, getServiceLabel, getServiceColor } from "@/lib/format";
+import { formatBytes, getServiceLabel, getServiceColor, formatDuration } from "@/lib/format";
 
 interface LiveDownload {
   key: string;
@@ -138,7 +138,7 @@ function DownloadRow({ d, maxBps }: { d: LiveDownload; maxBps: number }) {
           <div className="flex items-center gap-2 mt-0.5 text-[11px] text-gray-500">
             <span className="font-medium text-gray-400">{getServiceLabel(d.service)}</span>
             <span className="font-mono">{d.clientIp}</span>
-            <span>· {formatBytes(d.totalBytes)} in {d.durationSec}s</span>
+            <span>· {formatBytes(d.totalBytes)} in {formatDuration(d.durationSec)}</span>
             {cacheable > 0 && (
               <span className={hitPct >= 50 ? "text-green-400" : "text-amber-400"}>· {hitPct}% cached</span>
             )}

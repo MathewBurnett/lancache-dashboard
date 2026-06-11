@@ -13,5 +13,14 @@ export function formatNumber(num: number): string {
   return num.toLocaleString();
 }
 
+export function formatDuration(seconds: number): string {
+  if (seconds < 60) return `${seconds}s`;
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  if (h > 0) return `${h}h ${m}m`;
+  return s > 0 ? `${m}m ${s}s` : `${m}m`;
+}
+
 // Service metadata lives in services.ts (full cache-domains coverage + fallback).
 export { getServiceLabel, getServiceColor, getServiceAbbr, getServiceMeta } from "./services";
