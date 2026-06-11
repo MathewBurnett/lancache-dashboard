@@ -8,6 +8,34 @@ Built to stay light on resources and tiny on disk, even when your access logs gr
 
 ---
 
+## Screenshots
+
+### Cache Savings
+![Cache Savings](docs/screenshots/cache-savings.png)
+
+### Stats Overview
+![Stats Overview](docs/screenshots/stats-cards.png)
+
+### Live Downloads
+![Live Downloads](docs/screenshots/live-downloads.png)
+
+### Bandwidth Trend
+![Bandwidth Chart](docs/screenshots/bandwidth-chart.png)
+
+### Services Breakdown
+![Services](docs/screenshots/services.png)
+
+### Recent Activity
+![Recent Activity](docs/screenshots/recent-activity.png)
+
+### Cached Games
+![Cached Games](docs/screenshots/cached-games.png)
+
+### Clients
+![Clients](docs/screenshots/clients.png)
+
+---
+
 ## Features
 
 - **Cache savings at a glance** — A hero banner shows exactly how much bandwidth was served from cache vs fetched from the internet, so you can see what you're saving.
