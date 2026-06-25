@@ -237,6 +237,12 @@ Game names, cover images, and related metadata are property of their respective 
 
 ---
 
+## Sponsors
+
+This project is sponsored and backed by **[Dot Internet](https://dotinternetbd.com/)**.
+
+---
+
 ## License
 
 Released under the [MIT License](./LICENSE).
