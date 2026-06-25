@@ -386,6 +386,28 @@ export default function Dashboard() {
         {/* Clients Table */}
         <ClientsTable clients={clients} />
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-800/50 py-4 mt-8">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          <p className="text-[11px] text-gray-600">
+            Built by{" "}
+            <a href="https://github.com/imahmud1" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-300 transition-colors">
+              imahmud1
+            </a>
+            {" · "}
+            <a href="https://github.com/imahmud1/lancache-dashboard" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-300 transition-colors">
+              Source
+            </a>
+            {" · "}
+            Sponsored by{" "}
+            <a href="https://dotinternetbd.com/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-300 transition-colors">
+              Dot Internet
+            </a>
+          </p>
+          <p className="text-[11px] text-gray-700">MIT License</p>
+        </div>
+      </footer>
     </div>
   );
 }
